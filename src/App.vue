@@ -1,45 +1,35 @@
 <script setup>
-import GoogleLogin from "./components/GoogleLogin.vue";
+import {useRoute, useRouter} from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+
+const setActiveTab = (tabName) => {
+  router.push({name: tabName});
+}
+
+const isActiveTab = (tabName) => {
+  return route.name === tabName;
+}
 </script>
 
 <template>
   <main class="vh-100 d-flex align-items-center justify-content-center">
-    <div class="mt-10">
-      <div class="bg-gray-50 p-10">
-        <div class="row mb-3">
-          <div class="col">
-            <p class="text-xl text-center">Create your account</p>
-          </div>
-        </div>
-        <div class="row mb-8">
-          <div class="col">
-            <p class="text-center">It's free and easy</p>
-          </div>
-        </div>
-        <div class="row mb-6">
-          <div class="col">
-            <label class="text-xs" for="name">Your Name</label>
-            <input type="text" class="form-control w-72" id="name" placeholder="Enter your name">
-          </div>
-        </div>
-        <div class="row mb-3">
-          <div class="col">
-            <button type="button" class="btn btn-primary w-full">
-              Next
-            </button>
-          </div>
-        </div>
-        <div class="row mt-3">
-          <div class="col">
-              <hr>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col text-center">
-            <GoogleLogin />
-          </div>
-        </div>
-      </div>
+    <div class="flex flex-column col-12 col-md-6 col-lg-4 mt-10 p-4">
+      <ul class="nav nav-fill nav-tabs mb-4">
+        <li class="nav-item">
+          <a :class="{ active: isActiveTab('login') }" class="nav-link" href="#" @click.prevent="setActiveTab('login')">
+            <i class="bi bi-key me-2"></i>Login
+          </a>
+        </li>
+        <li class="nav-item">
+          <a :class="{ active: isActiveTab('dropdown') }" class="nav-link" href="#"
+             @click.prevent="setActiveTab('dropdown')">
+            <i class="bi bi-search me-2"></i>Search
+          </a>
+        </li>
+      </ul>
+      <router-view/>
     </div>
   </main>
 </template>
