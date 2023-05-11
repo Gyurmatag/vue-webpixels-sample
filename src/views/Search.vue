@@ -5,7 +5,7 @@
       <span class="input-group-text">
         <i class="bi bi-search"></i>
       </span>
-      <input type="text" id="search" class="form-control pe-4" placeholder="Search for something" aria-label="Number" v-model="searchQuery" @input="updateAutocomplete" @keydown.up.prevent="up" @keydown.down.prevent="down" @keydown.enter.prevent="enter">
+      <input type="text" id="search" class="form-control pe-4" placeholder="iPhone" aria-label="Number" v-model="searchQuery" @input="updateAutocomplete" @keydown.up.prevent="up" @keydown.down.prevent="down" @keydown.enter.prevent="enter">
     </div>
     <div class="list-group list-group-flush bg-white w-100 border rounded" v-if="filteredItems.length > 0">
       <div class="list-group-item d-flex px-0 cursor-pointer" v-for="(item, i) in filteredItems" :key="item" :class="{ 'bg-gray-200 text-white': i === hoverIndex }" @mouseover="hoverIndex = i" @click="selectItem(item)">
