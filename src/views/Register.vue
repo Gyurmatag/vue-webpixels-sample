@@ -11,36 +11,63 @@
       </div>
     </div>
     <div class="row mb-6">
-      <div class="col" :class="{ error: v$.email.$error }">
+      <div class="col">
         <label class="text-xs" for="email">Email</label>
-        <input id="email" class="form-control" placeholder="Type your email" type="email" @input="v$.email.$touch" v-model="state.email">
-        <div class="input-errors" v-for="error in v$.email.$errors" :key="error.$uid">
-          <div class="error-msg">{{ error.$message }}</div>
+        <input
+            id="email"
+            class="form-control"
+            :class="{ 'border-red-600': v$.email.$error}"
+            placeholder="Type your email"
+            type="email"
+            @input="v$.email.$touch"
+            v-model="state.email"
+            maxlength="255"
+        >
+        <div v-for="error in v$.email.$errors" :key="error.$uid">
+          <div class="text-red-600 text-sm">{{ error.$message }}</div>
         </div>
       </div>
     </div>
-    <div class="row mb-1">
-      <div class="col" :class="{ error: v$.password.$error }">
+    <div class="row mb-6">
+      <div class="col">
         <label class="text-xs" for="password">Password</label>
-        <input id="password" class="form-control" placeholder="Type your password" type="password" @input="v$.password.$touch" v-model="state.password">
+        <input
+            id="password"
+            class="form-control"
+            :class="{ 'border-red-600': v$.password.$error}"
+            placeholder="Type your password"
+            type="password"
+            @input="v$.password.$touch"
+            v-model="state.password"
+            maxlength="255"
+        >
         <div class="input-errors" v-for="error in v$.password.$errors" :key="error.$uid">
-          <div class="error-msg">{{ error.$message }}</div>
+          <div class="text-red-600 text-sm">{{ error.$message }}</div>
         </div>
       </div>
     </div>
     <div class="row mb-6">
       <div class="col" :class="{ error: v$.passwordConfirm.$error }">
         <label class="text-xs" for="passwordConfirm">Password again</label>
-        <input id="passwordConfirm" class="form-control" placeholder="Make sure that the password matching" type="password" @input="v$.passwordConfirm.$touch" v-model="state.passwordConfirm">
-        <div class="input-errors" v-for="error in v$.passwordConfirm.$errors" :key="error.$uid">
-          <div class="error-msg">{{ error.$message }}</div>
+        <input
+            id="passwordConfirm"
+            class="form-control"
+            :class="{ 'border-red-600': v$.passwordConfirm.$error}"
+            placeholder="Make sure that the password matching"
+            type="password"
+            @input="v$.passwordConfirm.$touch"
+            v-model="state.passwordConfirm"
+            maxlength="255"
+        >
+        <div v-for="error in v$.passwordConfirm.$errors" :key="error.$uid">
+          <div class="text-red-600 text-sm">{{ error.$message }}</div>
         </div>
       </div>
     </div>
     <div class="row mb-6">
       <div class="col">
         <div class="d-flex align-items-center">
-          <i class="bi bi-info-circle" style="font-size: 2rem; margin-right: 10px;"></i>
+          <i class="bi bi-info-circle text-xl me-3"></i>
           <p class="font-bold text-xs">By creating your account means you agree to the <a href="https://www.shiwaforce.com/en/general-contractual-conditions-octant-search">Terms and Conditions</a>, and our <a href="https://www.shiwaforce.com/en/privacy-policy-octant-search">Privacy Policy</a></p>
         </div>
       </div>
@@ -63,7 +90,7 @@
 <script setup>
 import {computed, reactive} from 'vue'
 import { useVuelidate } from '@vuelidate/core'
-import { required, minLength, email, sameAs } from '@vuelidate/validators'
+import { required, email, sameAs, helpers } from '@vuelidate/validators'
 
 const state = reactive({
   email: '',
@@ -73,11 +100,17 @@ const state = reactive({
 
 const passwordRef = computed(() => state.password);
 
+const passwordStrong = helpers.withMessage(
+    'Password must contain: number, lowercase, uppercase, special character, and must min. 8 characters',
+    value => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(value)
+)
+
 const rules = {
   email: { required, email },
-  password: { required, minLength: minLength(8) },
+  password: { required, passwordStrong },
   passwordConfirm: { required, sameAs: sameAs(passwordRef) },
 }
 
 const v$ = useVuelidate(rules, state)
 </script>
+
