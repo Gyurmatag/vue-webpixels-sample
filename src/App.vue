@@ -23,8 +23,13 @@ const isActiveTab = (tabName) => {
           </a>
         </li>
         <li class="nav-item">
-          <a :class="{ active: isActiveTab('dropdown') }" class="nav-link" href="#"
-             @click.prevent="setActiveTab('dropdown')">
+          <a :class="{ active: isActiveTab('register') }" class="nav-link" href="#" @click.prevent="setActiveTab('register')">
+            <i class="bi bi-key me-2"></i>Register
+          </a>
+        </li>
+        <li class="nav-item">
+          <a :class="{ active: isActiveTab('search') }" class="nav-link" href="#"
+             @click.prevent="setActiveTab('search')">
             <i class="bi bi-search me-2"></i>Search
           </a>
         </li>
